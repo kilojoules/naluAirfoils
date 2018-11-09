@@ -1,0 +1,72 @@
+/*-------------------------------------------------------------------------------*
+Caelus 8.04
+Web:   www.caelus-cml.com
+\*------------------------------------------------------------------------------*/
+FoamFile
+{
+   version          2.0;
+   format           ascii;
+   class            dictionary;
+   location         "system";
+   object           controlDict;
+}
+//-------------------------------------------------------------------------------
+
+application         simpleSolver;
+
+startFrom           startTime;
+
+startTime           0;
+
+stopAt              endTime;
+
+endTime             50.0; // increase endTime to atleast 50000 for validation cases
+
+deltaT              TIMESTEP ;
+
+writeControl        runTime;
+
+writeInterval       2;
+
+purgeWrite          3;
+
+writeFormat         ascii;
+
+writePrecision      12;
+
+writeCompression    true;
+
+timeFormat          general;
+
+timePrecision       6;
+
+runTimeModifiable   true;
+
+//-------------------------------------------------------------------------------
+
+// Function Objects to obtain forces
+
+functions
+{
+    forceCoeffs
+    {
+        type            forceCoeffs;
+
+        functionObjectLibs ("libforces.so");
+        outputControl timeStep;
+        outputInterval 1;
+        patches         ( airfoil );
+        pName       p;
+        UName       U;
+        rhoName     rhoInf;      // Indicates incompressible
+        log         true;
+        rhoInf      1.177;      // Redundant for incompressible
+        liftDir     (-ANGLEY ANGLEX 0);
+        dragDir     (ANGLEX ANGLEX 0);
+        CofR        (0.25 0 0);  // Axle midpoint on ground
+        pitchAxis   (0 0 1);
+        magUInf     10.0;
+        lRef        1.0;        // Wheelbase length
+        Aref        1.0;        // Estimated
+    }
+}

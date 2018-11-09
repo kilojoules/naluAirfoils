@@ -1,0 +1,36 @@
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       polyBoundaryMesh;
+    location    "constant/polyMesh";
+    object      boundary;
+}
+
+4         
+(
+    airfoil
+    {
+        type wall;
+        nFaces 128;
+        startFace 28432;
+    }
+    farfield
+    {
+        type patch;
+        nFaces 352;
+        startFace 28560;
+    }
+    side1
+    {
+        type empty;
+        nFaces 14336;
+        startFace 28912;
+    }
+    side2
+    {
+        type empty;
+        nFaces 14336;
+        startFace 43248;
+    }
+)

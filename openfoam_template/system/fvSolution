@@ -1,0 +1,119 @@
+/*-------------------------------------------------------------------------------*
+Caelus 8.04
+Web:   www.caelus-cml.com
+\*------------------------------------------------------------------------------*/
+FoamFile
+{
+        version                         2.0;
+        format                          ascii;
+        class                           dictionary;
+        location                        "system";
+        object                          fvSolution;
+}
+//------------------------------------------------------------------------------
+
+solvers
+{
+    "(p|pPrime)"
+    {
+        solver                  PCG;
+        preconditioner
+        {
+            preconditioner          GAMG;
+            smoother                SSGS;
+            cacheAgglomeration      true;
+            nCellsInCoarsestLevel   10;
+            agglomerator            algebraicPair;
+            mergeLevels             1;
+        }
+
+        tolerance               1e-10;
+        relTol                  0.01;
+    }
+
+    "(p|pPrime)Final"
+    {
+      $pPrime;
+      relTol 0;
+    }
+    
+    "(U|UFinal)"
+    {
+        solver                  PBiCGStab;
+        preconditioner          USGS;
+        tolerance               1e-10;
+        relTol                  0.001;
+    }
+
+
+    "(k|omega|nuTilda)"
+    {
+        solver                  PBiCGStab;
+        preconditioner          USGS;
+        tolerance               1e-10;
+        relTol                  0.001;
+    }
+
+    "(k|omega|nuTilda)Final"
+    {	
+    	$k;
+    }
+}
+
+PIMPLE
+{
+    nOuterCorrectors                    4;
+    nCorrectors                         1;
+    nNonOrthogonalCorrectors            1;
+    pRefPoint                 (-25 5 0.5);
+    pRefValue                           0;
+    residualControl
+    {
+        // p 
+        // {
+        //     tolerance    1.e-6;
+        //     relTol           0;
+        // }
+        // U
+        // {
+        //     tolerance    1.e-8;
+        //     relTol       1.e-3;
+        // }
+    }
+    turbOnFinalIterOnly            false;
+}
+
+
+SIMPLE
+{
+    nNonOrthogonalCorrectors    1;
+    pRefCell                    0;
+    pRefValue                   0;
+    consistent                  yes;
+    correctionFoam              yes;
+}
+
+potentialFlow
+{
+    nNonOrthogonalCorrectors 10;
+    pRefCell            0;
+    pRefValue           0;
+
+}
+
+// relexation factors
+
+relaxationFactors
+{
+    fields
+    {
+        p               0.3;
+        pFinal          0.3;
+    }
+    equations
+    {
+        U                  0.7;
+        "(k|omega|nuTilda)"        0.7;
+        "(U|k|omega|nuTilda)Final" 0.7;
+    }
+}

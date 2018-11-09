@@ -1,0 +1,19 @@
+#!/bin/bash
+#PBS -l walltime=24:00:00             # WALLTIME limit
+#PBS -q batch                        # short queue
+#PBS -l nodes=1:ppn=16               # Number of nodes, put 24 processes on each
+#PBS -N naca0012_pf                  # Name of job
+#PBS -A windsim                      # Project handle
+ 
+cd $PBS_O_WORKDIR
+module purge; module load conda/5.1; source activate caelus3clone
+rm -rf postProcessing *log 0
+cp -r 0.orig/ 0
+caelus run potentialSolver
+caelus run pimpleSolver
+
+
+
+
+
+

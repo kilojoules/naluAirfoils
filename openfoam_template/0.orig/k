@@ -1,0 +1,43 @@
+/*---------------------------------------------------------------------------*\
+ Caelus contributors                           
+ Web:      www.caelus-cml.com 
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      k;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 2 -2 0 0 0 0];
+
+internalField   uniform 0.095118;
+
+boundaryField
+{
+    airfoil
+    {
+        type            fixedValue;
+        value           uniform 1e-16;
+    }
+    farfield
+    {
+        type            inletOutlet;
+        inletValue      uniform 0.095118;
+        value           uniform 0.095118;
+    }
+    side1
+    {
+        type            empty;
+    }
+    side2
+    {
+        type            empty;
+    }
+}
+
+
+// ************************************************************************* //

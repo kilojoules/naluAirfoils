@@ -1,0 +1,40 @@
+/*---------------------------------------------------------------------------*\
+ Caelus contributors                           
+ Web:      www.caelus-cml.com 
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      pPrime;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 2 -2 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    airfoil
+    {
+        type            zeroGradient;
+    }
+    farfield
+    {
+        type            zeroGradient;
+    }
+    side1
+    {
+        type            empty;
+    }
+    side2
+    {
+        type            empty;
+    }
+}
+
+
+// ************************************************************************* //
